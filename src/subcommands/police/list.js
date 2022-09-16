@@ -1,4 +1,4 @@
-const { CommandInteraction, EmbedBuilder, CommandInteractionOptionResolver } = require("discord.js");
+const { CommandInteraction, EmbedBuilder, CommandInteractionOptionResolver, Colors } = require("discord.js");
 const { fetch } = require("undici");
 
 const BaseSubcommand = require("../../structures/BaseSubcommand");
@@ -32,7 +32,7 @@ module.exports = class PoliceListCommand extends BaseSubcommand {
 
         if (!res.ok) {
             const embed = new EmbedBuilder()
-                .setColor(0x1b4080)
+                .setColor(Colors.Blue)
                 .setDescription("There was a problem whilst interacting with the endpoint");
 
             return await interactionSafeReply(interaction, { embeds: [embed] });
@@ -45,7 +45,7 @@ module.exports = class PoliceListCommand extends BaseSubcommand {
             let str = "";
 
             for (const policeForce of section) {
-                str += `**${policeForce.name}** - \`${policeForce.id}\`\n`
+                str += `**${policeForce.name}** ─ \`${policeForce.id}\`\n`
             }
 
             const embed = new EmbedBuilder()

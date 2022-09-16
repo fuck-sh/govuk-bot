@@ -101,4 +101,19 @@ module.exports = class PageBuilder {
             await interaction.update(this.getCurrentPage(this.currentPage + 1));
         }
     }
+
+    /**
+     * 
+     * @param {CommandInteraction} interaction 
+     */
+
+    async onEnded(interaction) {
+        this.row.components.forEach(component => {
+            component.setDisabled(true);
+        });
+
+        await interaction.editReply({
+            components: [this.row]
+        });
+    }
 }
