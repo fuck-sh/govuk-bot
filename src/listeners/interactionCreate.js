@@ -29,7 +29,7 @@ module.exports = class InteractionCreate extends Event {
         if (!command) return;
 
         try {
-            await command.run(interaction);
+            await command.run(interaction, interaction.options);
         } catch (error) {
             console.error(error);
 
