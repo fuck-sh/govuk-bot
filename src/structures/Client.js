@@ -1,4 +1,11 @@
-const { Client, ClientOptions } = require("discord.js");
+const {
+    Client,
+    ClientOptions,
+    Collection
+} = require("discord.js");
+
+const registerListeners = require("../utils/registerListeners");
+const registerCommands = require("../utils/registerCommands");
 
 module.exports = class ExtendedClient extends Client {
     /**
@@ -11,6 +18,24 @@ module.exports = class ExtendedClient extends Client {
         this.once("ready", () => {
             console.log(`Ready! ${this.user.tag}`);
         });
+
+        this.commands = new Collection();
+    }
+
+    async runListeners() {
+        let listeners = await registerListeners("../listeners");
+
+        for (const listener of listeners) {
+            this[(listener.once ? "once" : "on")](listener.name, (...args) => listener.run(this, ...args));
+        }
+    }
+
+    async registerCommands() {
+        let commands = await registerCommands("../commands");
+
+        for (const command of commands) {
+            this.commands.set(command.options.name, command);
+        }
     }
 
     /**
@@ -18,6 +43,8 @@ module.exports = class ExtendedClient extends Client {
      * @returns Promise<string>
      */
     async start() {
+        await this.registerCommands();
+        await this.runListeners();
         return await super.login(process.env.TOKEN);
     }
 }
