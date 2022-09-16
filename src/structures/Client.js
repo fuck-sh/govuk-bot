@@ -6,6 +6,7 @@ const {
 
 const registerListeners = require("../utils/registerListeners");
 const registerCommands = require("../utils/registerCommands");
+const registerSubcommands = require("../utils/registerSubcommands");
 
 module.exports = class ExtendedClient extends Client {
     /**
@@ -39,11 +40,20 @@ module.exports = class ExtendedClient extends Client {
         }
     }
 
+    async registerSubcommands() {
+        let subcommands = await registerSubcommands("../subcommands");
+
+        for (const subcommand of subcommands) {
+            this.subcommands.set(subcommand.toString(), subcommand);
+        }
+    }
+
     /**
      * 
      * @returns Promise<string>
      */
     async start() {
+        await this.registerSubcommands();
         await this.registerCommands();
         await this.runListeners();
         return await super.login(process.env.TOKEN);

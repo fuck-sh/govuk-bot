@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 
-class Command {
+class BaseCommand {
     /**
      * 
      * @param {object} opt
@@ -19,4 +19,4 @@ class Command {
     }
 }
 
-module.exports = Command;
+module.exports = BaseCommand;
