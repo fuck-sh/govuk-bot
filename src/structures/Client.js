@@ -20,6 +20,7 @@ module.exports = class ExtendedClient extends Client {
         });
 
         this.commands = new Collection();
+        this.subcommands = new Collection();
     }
 
     async runListeners() {
