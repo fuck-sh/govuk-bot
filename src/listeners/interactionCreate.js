@@ -16,8 +16,10 @@ module.exports = class InteractionCreate extends Event {
     async run(client, interaction) {
         if (!interaction.isChatInputCommand()) return;
 
-        const command = client.commands.get(interaction.commandName);
+        let command = client.commands.get(interaction.commandName);
+        let interactionSubcommand = interaction.options.getSubcommand();
 
+        if (interactionSubcommand) command = client.subcommands.get(interactionSubcommand);
         if (!command) return;
 
         try {
